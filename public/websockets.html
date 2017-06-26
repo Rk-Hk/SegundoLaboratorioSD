@@ -7,6 +7,8 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/style.css">
 
+	<link rel="icon" type="image/png" href="img/unnamed.png">
+
 
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="js/main.js"></script>
@@ -19,16 +21,15 @@
 
 	<div class="container">
 		<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-				 <span class="navbar-toggler-icon"></span>
-			  </button>
-			<a class="navbar-brand" href="#">WeatherFisi</a>
-			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="logo">
+				<img class="logo_img" src="img/unnamed.png">
+				<a class="navbar-brand logo_titulo" href="#">WeatherFisi</a>
+			</div>
+			<div class="navbar-collapse contenido_navbar" id="navbarNavAltMarkup">
 				<div class="navbar-nav">
-					<a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-					<a class="nav-item nav-link" href="#">Features</a>
-					<a class="nav-item nav-link" href="#">Pricing</a>
-					<a class="nav-item nav-link disabled" href="#">Disabled</a>
+					<a class="nav-item nav-link active" href="index.html">Inicio <span class="sr-only">(current)</span></a>
+					<a class="nav-item nav-link" href="websockets.html">WebSocket</a>
+					<a class="nav-item nav-link" href="weather.html">API OpenWeatherMap</a>
 				</div>
 			</div>
 		</nav>
@@ -39,8 +40,8 @@
 				<div class="jumbotron">
 					<div class="encabezado">
 						<div id="val_bandera"></div>
-						<h1 id="titulo" class="display-3">Alemania!</h1>
-						<p class ="capital"> Capital : <span id="capital">Berlin</span></p>
+						<h1 id="titulo" class="display-3">Perú</h1>
+						<p class="capital"> Capital : <span id="capital">Lima</span></p>
 					</div>
 
 					<div class="row">
@@ -53,12 +54,12 @@
 									<div class="row">
 
 										<div id="tem_mes" class="col-sm-6">
-											<p>Mes: <span id="val_mes">Ene</span></p>
-											<p id="val_temp_mes">23.4 °C</p>
+											<p class="negrita">Mes: <span id="val_mes">Ene</span></p>
+											<p><span id="val_temp_mes">23.4 </span>°C</p>
 										</div>
 										<div id="tem_anio" class="col-sm-6">
-											<p>Promedio Anual</p>
-											<p id="val_temp_anual">25.6 °C</p>
+											<p class="negrita">Promedio Anual</p>
+											<p><span id="val_temp_anual">25.6</span> °C</p>
 										</div>
 									</div>
 								</div>
@@ -72,13 +73,13 @@
 								<div class="card-block">
 									<div class="row">
 
-										<div id="tem_mes" class="col-sm-6">
-											<p>Mes : <span id="val_mes_p">Ene</span></p>
-											<p id="val_prec_mes">100 mm</p>
+										<div id="prec_mes" class="col-sm-6">
+											<p class="negrita">Mes : <span id="val_mes_p">Ene</span></p>
+											<p><span id="val_prec_mes">169.24</span> mm</p>
 										</div>
 										<div id="prec_anio" class="col-sm-6">
-											<p>Promedio Anual</p>
-											<p id="val_prec_anual">4210 mm</p>
+											<p class="negrita">Promedio Anual</p>
+											<p><span id="val_prec_anual">1513.24</span> mm</p>
 										</div>
 									</div>
 								</div>

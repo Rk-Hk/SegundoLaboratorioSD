@@ -36,7 +36,30 @@
 
 #val_mes, #val_mes_p{
 	text-transform: uppercase;
-	font-weight: bold;
+	font-weight:600;
+	color: deeppink;
+}
+
+#val_temp_mes, #val_temp_anual, #val_prec_mes, #val_prec_anual{
+	font-size: 40px;
+}
+
+.logo{
+	position: relative;
+}
+
+.contenido_navbar{
+	display: block;
+	margin-left: 150px;
+}
+
+.logo_img{
+	width: 50px;
+}
+.logo_titulo{
+	position: absolute;
+	top: 5px;
+	left: 60px;
 }
 
 
@@ -44,10 +67,14 @@
 	margin-top: 10px;
 	width: 100px;
 	height: 100px;
-	background: url(../img/unnamed.png);
+	background: url(../img/bandera.jpg);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	border-radius: 50%;
+}
+
+.negrita{
+	font-weight: 500;
 }
 
 #titulo{

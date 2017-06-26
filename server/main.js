@@ -64,7 +64,7 @@ function getDataMonth(idpais, mes){
 
 setInterval(function(){
 		getDataMonth(numeroAleatorio(minVal,maxval),numeroAleatorio(0,11));
-	},5000);
+	},60000);
 
 app.use(express.static('public'));	
 
@@ -93,7 +93,7 @@ io.on('connection', function(socket) {
    console.log('Un cliente se ha conectado');
 	setInterval(function(){
 		enviarData(socket);
-	},5000);
+	},60000);
 	//creamos messages, con un objeto que contienne id,text y autor.Esto sera enviado al cliente
 	
 });
