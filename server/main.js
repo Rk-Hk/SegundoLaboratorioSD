@@ -2,16 +2,15 @@
 
 var express = require('express');  
 var app = express();  
-var server = require('http').Server(app);  
+var http = require('http');
+var server = http.Server(app);
 var io = require('socket.io')(server);
 var mysql = require('mysql');
 
 var minVal = 1, maxval = 178;
 var meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 
-var val_prec= null, val_mes, val_temp, val_prec_anual, val_temp_anual, val_pais;
-
-var query_result;
+var val_prec= null, val_capital, val_mes, val_temp, val_prec_anual, val_temp_anual, val_pais, url_bandera;
 
 var conexion = mysql.createPool({
 	connectionLimit: 100,
@@ -32,8 +31,28 @@ function getDataMonth(idpais, mes){
 			throw err;
 		}
 		
-		val_pais = results[0].nom_pais,
-		val_mes = mes,
+		var options = {
+			host	:	'restcountries.eu',
+			port	:	80,
+			path	:	'/rest/v2/alpha/'+results[0]['nom_pais']+'?fields=name;capital;flag',
+			method:	'GET'
+		}
+
+		http.request(options, function(res){
+			var body = '';
+			res.on('data',function(chuck){
+				body+=chuck;
+			});
+			res.on('end', function(){
+				var result = JSON.parse(body);
+				val_pais = result['name'],
+				val_capital = result['capital'],
+				url_bandera = result['flag']
+			});
+		}).end();
+
+
+		val_mes = meses[mes],
 		val_prec = results[0]['dpc_'+meses[mes]],
 		val_prec_anual = results[0].dpc_anual,
 		val_temp = results[0]['dtc_'+meses[mes]],
@@ -60,11 +79,13 @@ app.get('/websockets.html',function(req,res){
 function enviarData(socket){
 	socket.emit('messages', {		
 			pais			: val_pais,
+			capital		: val_capital,
 			mes			: val_mes,
 			temp			: val_temp,
 			temp_anual	: val_temp_anual,
 			prec			: val_prec,
-			prec_anual	: val_prec_anual
+			prec_anual	: val_prec_anual,
+			bandera		: url_bandera
 		});
 }
 

@@ -9,6 +9,10 @@
 	margin: auto;
 }
 
+.cuerpo_socket{
+	padding-top: 10px;
+}
+
 #map {
         height: 500px;
         width: 100%;
@@ -16,5 +20,44 @@
 
 .contenido{
 	margin-top: 10px;
+}
+
+.encabezado{
+	height: 120px;
+	display: block;
+	position: relative;
+}
+
+.capital{
+	position: absolute;
+	bottom: 0px;
+	left: 115px;
+}
+
+#val_mes, #val_mes_p{
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+
+#val_bandera{
+	margin-top: 10px;
+	width: 100px;
+	height: 100px;
+	background: url(../img/unnamed.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	border-radius: 50%;
+}
+
+#titulo{
+	position: absolute;
+	top: 0px;
+	left: 115px;
+}
+
+.jumbotron{
+	padding-top: 20px;
+	padding-bottom: 20px;
 }
 

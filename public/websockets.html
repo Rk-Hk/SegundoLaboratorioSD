@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>WebsocketsFisi</title>
@@ -31,23 +32,68 @@
 				</div>
 			</div>
 		</nav>
-		<div class="row">
+
+
+		<div class="row cuerpo_socket">
 			<div class="col-sm-12 cuerpo">
-                            <div class="jumbotron">
-  <h1 id="titulo" class="display-3">Alemania!</h1>
-  <p>Temperaturas medias mensuales y anuales por país para el período 1961-1999. Los valores están en grados Celsius.</p>
-  <p>Media mensual y anual de precipitación por país para el período 1961-1999. Los valores son en milímetros (mm).</p>
-  <hr class="my-4">
-  <div id="mensajes"></div>
-  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-  </p>
-</div>
-				
+				<div class="jumbotron">
+					<div class="encabezado">
+						<div id="val_bandera"></div>
+						<h1 id="titulo" class="display-3">Alemania!</h1>
+						<p class ="capital"> Capital : <span id="capital">Berlin</span></p>
+					</div>
+
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="card text-center">
+								<div class="card-header">
+									TEMPERATURA
+								</div>
+								<div class="card-block">
+									<div class="row">
+
+										<div id="tem_mes" class="col-sm-6">
+											<p>Mes: <span id="val_mes">Ene</span></p>
+											<p id="val_temp_mes">23.4 °C</p>
+										</div>
+										<div id="tem_anio" class="col-sm-6">
+											<p>Promedio Anual</p>
+											<p id="val_temp_anual">25.6 °C</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="card text-center">
+								<div class="card-header">
+									PRECIPITACIÓN
+								</div>
+								<div class="card-block">
+									<div class="row">
+
+										<div id="tem_mes" class="col-sm-6">
+											<p>Mes : <span id="val_mes_p">Ene</span></p>
+											<p id="val_prec_mes">100 mm</p>
+										</div>
+										<div id="prec_anio" class="col-sm-6">
+											<p>Promedio Anual</p>
+											<p id="val_prec_anual">4210 mm</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<hr class="my-4">
+					<ul>
+						<li>Temperaturas medias mensuales y anuales por país para el período 1961-1999. Los valores están en grados Celsius.</li>
+						<li>Media mensual y anual de precipitación por país para el período 1961-1999. Los valores son en milímetros (mm).</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
 </body>
-
 </html>
