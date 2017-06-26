@@ -1,15 +1,5 @@
-var https = require('https');
 
 var socket = io.connect('http://localhost:8080',{'forceNew':true});
-
-
-var optionsget = {
-    host : 'restcountries.eu', // here only the domain name
-    // (no http/https !)
-    port : 443,
-    path : '/rest/v2/alpha/', // the rest of the url with parameters if needed
-    method : 'GET' // do GET
-};
 
 /**
 * Esta a la escucha del evento messages de parte del servidor
