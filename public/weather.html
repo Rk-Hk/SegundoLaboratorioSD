@@ -3,6 +3,7 @@
 	<head>
 	<meta charset="UTF-8">
 	<title>WebsocketsFisi</title>
+	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<link rel="stylesheet" href="css/style.css">
 
@@ -14,6 +15,11 @@
 	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	
+	
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-rKJ5cGbl-KFXQATmZui7ZB44QxpHmx4&language=es" ></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script defer src="js/weather.js"></script>
 </head>
 
 <body>
@@ -35,38 +41,31 @@
 
 
 		<div class="row contenido">
-			<div class="col-sm-9"><div id="map"></div></div>
+			<div class="col-sm-9"><div id="map-canvas"></div></div>
 			<div class="col-sm-3">
 				<div class="card">
 					<div class="card-header">
-						Featured
+						DESCRIPCIÓN
 					</div>
 					<div class="card-block">
-						<h4 class="card-title">Special title treatment</h4>
-						<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+						<h4 id="titulo_card" class="card-title">Lima</h4>
+						<div id="descripcion"><p>Click sobre algún icono del mapa para ver el detalle del clima</p></div>
+						<button class="btn btn_primary" id="btn_historico" data-toggle='modal' data-target='#myModal' disabled>Historico</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<script>
-		function initMap() {
-			var uluru = {
-				lat: -25.363,
-				lng: 131.044
-			};
-			var map = new google.maps.Map(document.getElementById('map'), {
-				zoom: 4,
-				center: uluru
-			});
-			var marker = new google.maps.Marker({
-				position: uluru,
-				map: map
-			});
-		}
-	</script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-rKJ5cGbl-KFXQATmZui7ZB44QxpHmx4&callback=initMap">
-	</script>
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        
+        <div class="modal-body">
+          <div id="container" style="min-width: 560px; height: 400px; margin: 0 auto"></div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </body>
 </html>

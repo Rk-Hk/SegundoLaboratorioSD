@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>South America Maps Weather</title>
+  <style>
+    html, body{
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    #map-canvas {
+      width: 100%;
+      height: 100%;
+    }
+    .gm-style-iw {
+      text-align: center;
+    }
+  </style>
+
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+	<link rel="icon" type="image/png" href="img/unnamed.png">
+
+
+	<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+	
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7jbhp2o6UWZ8juDENQNNC_Cg9CJ2gUwo&language=es" ></script>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="recursos/js/jquery-3.1.1.min.js"></script>
+
+  <script>
+    var map;
+    var geoJSON;
+    var request;
+    var gettingData = false;
+    var openWeatherMapKey = "437f2ce40e5e9a47b1385c412901cc89";
+
+    function initialize() {
+      var mapOptions = {
+        zoom: 4,
+        center: new google.maps.LatLng(-16.290154,-63.588653),
+        mapTypeControl: false,
+        streetViewControl: false,
+        scaleControl: false
+      };
+
+      map = new google.maps.Map(document.getElementById('map-canvas'),
+          mapOptions);
+      
+      checkIfDataRequested();
+      
+      map.data.addListener('click', function(event) {
+        infowindow.setContent(
+         "<img src=" + event.feature.getProperty("icon") + ">"
+         + "<br /><strong>" + event.feature.getProperty("city") + "</strong>"
+         + "<br />" + event.feature.getProperty("temperature") + "&deg;C"
+         + "<br />" + event.feature.getProperty("description") +"<br/>"
+         + " Humedad: " + event.feature.getProperty("humidity") +" % <br/>"
+         + " Presión: " + event.feature.getProperty("pressure") +" hpa <br/>"
+         + "<button type='button' class='btn btn-primary' data-toggle='modal' data-target='#myModal'> + Más información</button>"
+         );
+
+        infowindow.setOptions({
+            position:{
+              lat: event.latLng.lat(),
+              lng: event.latLng.lng()
+            },
+            pixelOffset: {
+              width: 0,
+              height: -15
+            }
+          });
+
+        $(function () {
+          console.log(event.feature.getProperty("city"));
+          var request1;
+          var gettingData1 = false;
+          var results1;
+          var datosX=new Array;
+          var datosY=new Array;
+          var datosZ= new Array;
+          var dias= new Array;
+
+          var getWeather1 = function() {
+              gettingData1 = true;
+              var requestString = "http://api.openweathermap.org/data/2.5/forecast/daily?id="+event.feature.getProperty("id")+"&mode=json&units=metric&cnt=12&lang=es&appid=437f2ce40e5e9a47b1385c412901cc89";
+              request = new XMLHttpRequest();
+              request.onload = proccessResults1;
+              request.open("get", requestString, true);
+              request.send();
+          };
+
+          var proccessResults1 = function() {
+            console.log(this);
+            results1 = JSON.parse(this.responseText);
+            console.log(results1);
+            for (var i = 0; i < results1.list.length; i++) {
+              datosX[i]= results1.list[i].temp.morn;
+              datosY[i]= results1.list[i].temp.eve;
+              datosZ[i]= results1.list[i].temp.night;
+              var fecha= new Date(results1.list[i].dt*1000);
+              dias[i]=fecha.getDate()+'/'+(fecha.getMonth()+1);
+            }
+
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'spline'
+                },
+                credits:{
+                  enabled: false
+                },
+                title: {
+                    text: results1.city.name
+                },
+                subtitle: {
+                    text: 'SouthMapWeather'
+                },
+                xAxis: {
+                    categories: dias
+                },
+                yAxis: {
+                    title: {
+                        text: 'Temperatura'
+                    },
+                    labels: {
+                        formatter: function () {
+                            return this.value + '°';
+                        }
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            radius: 4,
+                            lineColor: '#666666',
+                            lineWidth: 1
+                        }
+                    }
+                },
+                series: [{
+                    name: 'Mañana',
+                    marker: {
+                        symbol: 'square'
+                    },
+                    data: datosX
+
+                }, {
+                    name: 'Tarde',
+                    marker: {
+                        symbol: 'diamond'
+                    },
+                    data: datosY
+                },{
+                  name: 'Noche',
+                  marker:{
+                    symbol:'square'
+                  },
+                  data: datosZ
+                }]
+            });
+
+              
+          };
+
+        getWeather1();
+        });
+
+        infowindow.open(map);
+
+      });
+
+    }
+
+    var checkIfDataRequested = function() {
+      if (gettingData === true) {
+        request.abort();
+        gettingData = false;
+      }
+      getWeather();
+    };
+   
+    var getWeather = function() {
+      gettingData = true;
+      var requestString = "http://api.openweathermap.org/data/2.5/group?id=3871336,3936456,3435910,3688689,3646738,3657509,3469058,3441575,3439389,3911925,3652462,3378644,3382160,3383330,3947322,3696183,3451190,3941584,3903987&units=metric&lang=es&APPID=437f2ce40e5e9a47b1385c412901cc89";
+      request = new XMLHttpRequest();
+      request.onload = proccessResults;
+      request.open("get", requestString, true);
+      request.send();
+    };
+  
+    var proccessResults = function() {
+      console.log(this);
+      var results = JSON.parse(this.responseText);
+      if (results.list.length > 0) {
+          resetData();
+          for (var i = 0; i < results.list.length; i++) {
+            geoJSON.features.push(jsonToGeoJson(results.list[i]));
+          }
+          drawIcons(geoJSON);
+      }
+
+    };
+    var infowindow = new google.maps.InfoWindow();
+    
+    var jsonToGeoJson = function (weatherItem) {
+      var feature = {
+        type: "Feature",
+        properties: {
+          id: weatherItem.id,
+          city: weatherItem.name,
+          weather: weatherItem.weather[0].main,
+          description: weatherItem.weather[0].description,
+          temperature: weatherItem.main.temp,
+          min: weatherItem.main.temp_min,
+          max: weatherItem.main.temp_max,
+          humidity: weatherItem.main.humidity,
+          pressure: weatherItem.main.pressure,
+          windSpeed: weatherItem.wind.speed,
+          windDegrees: weatherItem.wind.deg,
+          windGust: weatherItem.wind.gust,
+          icon: "http://openweathermap.org/img/w/"
+                + weatherItem.weather[0].icon  + ".png",
+          coordinates: [weatherItem.coord.lon, weatherItem.coord.lat]
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [weatherItem.coord.lon, weatherItem.coord.lat]
+        }
+      };
+      // Set the custom marker icon
+      map.data.setStyle(function(feature) {
+        return {
+          icon: {
+            url: feature.getProperty('icon'),
+            anchor: new google.maps.Point(25, 25),
+          },
+          title: ':)' +feature.getProperty('city')
+        };
+      });
+      // returns object
+      return feature;
+    };
+    // Add the markers to the map
+    var drawIcons = function (weather) {
+       map.data.addGeoJson(geoJSON);
+       // Set the flag to finished
+       gettingData = false;
+    };
+    // Clear data layer and geoJSON
+    var resetData = function () {
+      geoJSON = {
+        type: "FeatureCollection",
+        features: []
+      };
+    };
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+  </script>
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-fixed-left navbar-minimal animate" role="navigation">
+    <div class="navbar-toggler animate">
+      <span class="menu-icon"></span>
+    </div>
+    <ul class="navbar-menu animate">
+      <li>
+        <a href="#home" class="animate" data-toggle='modal' data-target='#myModalInicio'>
+          <span class="desc animate"> Inicio</span>
+          <span class="glyphicon glyphicon-home"></span>
+        </a>
+      </li>
+      <li>
+        <a href="#south-america" class="animate" >
+          <span class="desc animate"> South America Maps Weather </span>
+          <span class="glyphicon glyphicon-globe"></span>
+        </a>
+      </li>
+      <li>
+        <a href="#contact" class="animate" data-toggle='modal' data-target='#myModalGrupo'>
+          <span class="desc animate"> Integrantes </span>
+          <span class="glyphicon glyphicon-info-sign"></span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+
+  <div id="map-canvas"></div>
+
+<!-- Modal de Inicio-->
+  <div class="modal fade" id="myModalInicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+          <div class="modal-body">
+            <div id="contenido" style="min-width: 560px; height: 400px; margin: 0 auto; position: relative;">
+              <img src="recursos/img/cloud_computing.jpg" alt="Presentación Inicial" class="img-rounded img-responsive" style="margin-top: 20px; position: absolute;"/>
+              <section style="position: absolute; background-color: rgba(0,0,0,0.4); color: white; top: 20%; margin: 10px; padding: 20px;">
+                <h3 style="text-align: center;"><strong>Sistemas Distribuidos</strong><br/></h3>
+                <h4 style="text-align: center;"><strong>Cloud Computing</strong></h4>
+                <p style="text-align: justify;">Utilizando Eclipse Mars se estudiará e implementará una aplicación
+          web java que será instalada dentro de un entorno de Cloud Computing, con el fin de obtener conocimientos sobre el uso
+          de este paradigma de computación y entender su funcionamiento. Se usará las herramientas de Google App Engine, API Google Maps y OpenWeatherMap.</p>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Modal de Integrantes-->
+  <div class="modal fade" id="myModalGrupo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+          <div class="modal-body">
+            <div id="integrantes" style="min-width: 560px; height: 300px; margin: 0 auto; align-content: center;">
+              <h4 style="text-align: center;">INTEGRANTES</h4>
+              <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">
+                <div class="thumbnail">
+                <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                </div>
+                </div>
+
+                <div class="col-sm-6">
+                <div class="panel panel-default">
+                <div class="panel-heading">
+                <strong>Ayala Chero, Jhonn Richard</strong> <span class="text-muted">13200138</span>
+                </div>
+                </div>
+                </div>
+                <div class="col-sm-2"></div>
+              </div>
+              <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">
+                <div class="thumbnail">
+                <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                </div>
+                </div>
+
+                <div class="col-sm-6">
+                <div class="panel panel-default">
+                <div class="panel-heading">
+                <strong>Flores Gamboa, Gabriel Antonio</strong> <span class="text-muted">13200157</span>
+                </div>
+                </div>
+                </div>
+                <div class="col-sm-2"></div>
+              </div>
+              <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">
+                <div class="thumbnail">
+                <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                </div>
+                </div>
+
+                <div class="col-sm-6">
+                <div class="panel panel-default">
+                <div class="panel-heading">
+                <strong>Broncano Rivera, Renzo Raul</strong> <span class="text-muted">13200142</span>
+                </div>
+                </div>
+                </div>
+                <div class="col-sm-2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        
+        <div class="modal-body">
+          <div id="container" style="min-width: 560px; height: 400px; margin: 0 auto"></div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="recursos/js/script.js"></script>
+  <script src="recursos/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

@@ -56,4 +56,6 @@ function render (data){
 
 }
 
+
+
 //Ejemplo de link para consultar por pais https://restcountries.eu/rest/v2/alpha/per?fields=name;capital
