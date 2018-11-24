@@ -1,0 +1,13 @@
+# Dependency directories
+node_modules/
+
+# Public directory
+public/
+
+# Env files
+.private-env
+
+# Package Lock Json
+package-lock.json
+
+.DS_Store
